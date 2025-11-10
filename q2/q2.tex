@@ -1,0 +1,27 @@
+\documentclass{article}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{graphicx}
+\usetikzlibrary{automata, positioning, patterns, arrows.meta}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+Cosine similarity:
+$$\textbf{a} = \langle1, 2, 3, 4 \rangle, \textbf{b} = \langle4, 3, 2, 1 \rangle$$
+$$\cos(\textbf{a}, \textbf{b}) = \frac{\textbf{a} \cdot \textbf{b}}{\left\lVert \textbf{a} \rVert\right \left\lVert \textbf{b} \rVert\right}$$
+$$\textbf{a} \cdot \textbf{b} = 4 + 6 + 6 + 4 = 20$$
+$$\left\lVert \textbf{a} \rVert\right \left\lVert \textbf{b} \rVert\right = (\sqrt{30})^2 = 30$$
+$$\cos(\textbf{a}, \textbf{b}) = \frac{20}{30} = \frac{2}{3}$$
+
+If $\textbf{b} = -\textbf{a} = \langle -1, -2, -3, -4\rangle$
+$$\textbf{a} \cdot \textbf{b} = -1 - 4 -9 - 16 = -30$$
+$$\left\lVert \textbf{a} \rVert\right \left\lVert \textbf{b} \rVert\right = (\sqrt{30})^2 = 30$$
+$$\cos(\textbf{a}, \textbf{b}) = \frac{-30}{30} = -1$$
+\end{document}
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: t
+%%% End:

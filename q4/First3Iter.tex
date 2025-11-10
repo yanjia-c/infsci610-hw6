@@ -1,0 +1,63 @@
+\documentclass{article}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{graphicx}
+\usetikzlibrary{automata, positioning, patterns, arrows.meta}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+\textbf{First Iteration}
+
+Init each node with Rank $R_0 = \frac{1}{4}$\\
+$$R_{t}(i) = \frac{0.15}{4} + 0.85\sum_{j \in pred(i)} \frac{R_{t - 1}(j)}{k_{out}(j)}$$
+
+Node 1:
+$$R_{1}(1) = 0.375 + 0.85(\frac{1/4}{2} + \frac{1/4}{2}) = \frac{1}{4}$$
+
+Node 2 (I'm not going to type all of that \LaTeX):
+$$R_{1}(2) = 0.4625$$
+
+Node 3:
+$$R_{1}(3) = 0.14375$$
+
+Node 4:
+$$R_{1}(4) = 0.14375$$
+
+\textbf{Second Iteration}
+
+Node 1:
+$$R_{2}(1) = 0.2952$$
+
+Node 2:
+$$R_{2}(2) = 0.3722$$
+
+Node 3:
+$$R_{2}(3) = 0.2341$$
+
+Node 4:
+$$R_{2}(4) = 0.0986$$
+
+\textbf{Third Iteration}
+
+Node 1:
+$$R_{3}(1) = 0.2376$$
+
+Node 2:
+$$R_{3}(2) = 0.4298$$
+
+Node 3:
+$$R_{3}(3) = 0.1957$$
+
+Node 4:
+$$R_{3}(4) = 0.1370$$
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: t
+%%% End:

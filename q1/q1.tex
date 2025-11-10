@@ -1,0 +1,67 @@
+\documentclass{article}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{graphicx}
+\usetikzlibrary{automata, positioning, patterns, arrows.meta}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+Given:
+Base HTML file, $5 \times 10^3 \times 8$ bits, and  8 referenced objects,
+each $200 \times 10^3 \times 8$ bits, on the same server. Control messages are
+200 bits each.\\
+Client and server are connected with $TR = 10 \times 10^6 \times 8$ bits per second
+in both directions. Non-round trip propogation delay is 50 ms.
+How long to retrieve objects:\\
+
+Thus, we know the Non Round Trip Time for each Control request is
+$$T_{CONTROL} = \frac{200}{8 \times 10^{7}} + (50 \times 10^{-3}) \text{ seconds}
+= 0.0500025 \text{ seconds} = 50.00025 \text{ ms}$$
+
+And that each TCP request/response is
+$$RTT_{TCP} = 2T_{CONTROL} = 100.0005 \text{ms}$$
+
+The amount of time to transmit the base HTML file is (not including file request):
+$$T_{HTML} = \frac{5 \times 10^3 \times 8}{8 \times 10^{7}} + (50 \times 10^{-3}) \text{ seconds}
+= 0.0505 \text{ seconds} = 50.5 \text{ ms}$$
+
+The amount of time to transmit each object is (not including file request):
+$$T_{O} = \frac{200 \times 10^3 \times 8}{8 \times 10^{7}} + (50 \times 10^{-3}) \text{ seconds}
+= 0.07 \text{ seconds} = 70 \text{ ms}$$
+
+\textbf{A: Using non-persistent HTTP with no parallel connections}
+Aka HTTP 1.0. There is a seperate TCP connection for each object.
+$$T = \sum_{i = 1}^{9}RTT_{TCP} + T_{CONTROL} + T_{i}$$
+$$= 9(RTT_{TCP}+T_{CONTROL}) + T_{HTML}+ 8(T_{O})$$
+$$= 9(100.0005 + 50.00025) + 50.5 + 8(70) \text{ ms}$$
+$$= 1960.00675 \text{ ms} = 1.96000675 \text{ s}$$
+
+\textbf{B: Using non-persistent HTTP with parallel connections}
+There is a seperate TCP connection for each object. Base HTML
+file must be received before objects are requested. Afterwards, we can run each
+item in parallel. Time to receieve the base HTML file:
+$$T_{Base} = RTT_{TCP} + T_{CONTROL} + T_{HTML}$$
+$$= 100.0005 + 50.00025 + 50.5 \text{ ms} = 200.50075 \text{ ms}$$
+Next, we calculate time for each object opening 8 parallel connections,
+with $TR_{p} = \frac{1}{8} \times TR$.
+So the new $T_O$ is:
+$$T_O = \frac{200 \times 10^3 \times 8}{10^7} + (50 \times 10^{-3}) = 210 \text{ ms}$$
+Since we run all objects in parallel, the final time is:
+$$T = T_{Base} + T_{CONTROL} + T_O = 460.501 \text{ ms}$$
+
+\textbf{C: Using persistent HTTP, no pipelining or parallel connections}
+HTTP 1.1. Allows for multiple HTTP requests to be sent over the same TCP
+connection. Can only send new requests once previous request was received
+(non-pipelined). Non parallel.
+$$T = RTT_{TCP} + 9(T_{CONTROL}) + T_{HTML} + 8(T_{O})$$
+$$= 100.0005 + 9(50.00025) + 50.5 + 8(70) = 1160.50275 \text{ ms} = 1.16050275 \text{ s}$$
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: t
+%%% End:
